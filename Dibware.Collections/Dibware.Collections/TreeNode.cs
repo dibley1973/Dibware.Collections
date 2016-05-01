@@ -4,15 +4,16 @@ namespace Dibware.Collections
 {
     public class TreeNode<T>
     {
-        private TreeNodeList<T> _nodes;
+        private TreeNodeList<T> _children;
         private string _text;
 
-        public TreeNodeList<T> Nodes
+        public TreeNodeList<T> Children
         {
             get
             {
-                return _nodes ?? (_nodes = new TreeNodeList<T>(this));
+                return _children ?? (_children = new TreeNodeList<T>(this));
             }
+            private set { _children = value; }
         }
 
         public TreeNode()
@@ -27,18 +28,39 @@ namespace Dibware.Collections
             _text = text;
         }
 
+        /// <summary>
+        /// Gets or sets the {t} stored in the tag.
+        /// </summary>
+        /// <value>
+        /// The tag.
+        /// </value>
         public T Tag { get; set; }
 
+        /// <summary>
+        /// Gets or sets the text associated with this <see>
+        /// <cref>TreeNode</cref></see>.
+        /// </summary>
+        /// <value>
+        /// The text.
+        /// </value>
         public string Text
         {
-            get
-            {
-                return _text ?? "";
-            }
-            set
-            {
-                _text = value;
-            }
+            get { return _text ?? string.Empty; }
+            set { _text = value; }
+        }
+
+        public void AppendChildren(TreeNodeList<T> children)
+        {
+            if (children == null) throw new ArgumentNullException("children");
+
+            Children.AddRange(children);
+        }
+
+        public void ReplaceChildren(TreeNodeList<T> children)
+        {
+            if (children == null) throw new ArgumentNullException("children");
+
+            Children = children;
         }
     }
 }

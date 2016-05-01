@@ -1,18 +1,20 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Dibware.Collections
 {
-    public class TreeNodeList<T>
+    public class TreeNodeList<T> : IEnumerable, IEnumerable<T>
     {
-        private readonly List<TreeNode<T>> _children;
+        private List<TreeNode<T>> _children;
         private readonly TreeNode<T> _owner;
 
-        internal TreeNodeList(TreeNode<T> owner)
+        public TreeNodeList(TreeNode<T> owner)
             : this(owner, new List<TreeNode<T>>())
         { }
 
-        internal TreeNodeList(TreeNode<T> owner, List<TreeNode<T>> children)
+        public TreeNodeList(TreeNode<T> owner, List<TreeNode<T>> children)
         {
             if (owner == null) throw new ArgumentNullException("owner");
             if (children == null) throw new ArgumentNullException("children");
@@ -67,18 +69,26 @@ namespace Dibware.Collections
 
         public void AddRange(TreeNodeList<T> nodes)
         {
+            if (nodes == null) throw new ArgumentNullException("nodes"); 
+            if (nodes.ChildCount == 0) return;
+
+            //foreach (node in nodes.ToList())
+            //{
+            //    Children.Add((TreeNode<T>)node);
+            //}
+
         }
 
         public void AddRange(TreeNode<T>[] nodes)
         {
-            if (nodes == null)
+            if (nodes == null) throw new ArgumentNullException("nodes");
+            if (nodes.Length == 0) return;
+
+            foreach (var node in nodes)
             {
-                throw new ArgumentNullException("nodes");
+                Children.Add(node);
             }
-            if (nodes.Length == 0)
-            {
-                return;
-            }
+
             //TreeView treeView = this.owner.TreeView;
             //if (treeView != null && (int)nodes.Length > 200)
             //{
@@ -113,6 +123,16 @@ namespace Dibware.Collections
         protected internal TreeNode<T> Owner
         {
             get { return _owner; }
+        }
+
+        IEnumerator<T> IEnumerable<T>.GetEnumerator()
+        {
+            throw new NotImplementedException();
+        }
+
+        public IEnumerator GetEnumerator()
+        {
+            throw new NotImplementedException();
         }
     }
 }
