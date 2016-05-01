@@ -1,0 +1,36 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2013
+VisualStudioVersion = 12.0.40629.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Dll", "Dll", "{964E3A62-113D-44EE-BCA6-E0110199FCC3}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{DF74FBBB-F35B-4BBF-8114-321FBB6502FC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dibware.Collections", "Dibware.Collections\Dibware.Collections.csproj", "{D9B801D5-3968-4324-91DD-8832A55FDC96}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dibware.Collections.Tests", "Dibware.Collections.Tests\Dibware.Collections.Tests.csproj", "{83E6F82B-2BEF-451F-91A6-312E882ECEC4}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{D9B801D5-3968-4324-91DD-8832A55FDC96}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D9B801D5-3968-4324-91DD-8832A55FDC96}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D9B801D5-3968-4324-91DD-8832A55FDC96}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D9B801D5-3968-4324-91DD-8832A55FDC96}.Release|Any CPU.Build.0 = Release|Any CPU
+		{83E6F82B-2BEF-451F-91A6-312E882ECEC4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{83E6F82B-2BEF-451F-91A6-312E882ECEC4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{83E6F82B-2BEF-451F-91A6-312E882ECEC4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{83E6F82B-2BEF-451F-91A6-312E882ECEC4}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{D9B801D5-3968-4324-91DD-8832A55FDC96} = {964E3A62-113D-44EE-BCA6-E0110199FCC3}
+		{83E6F82B-2BEF-451F-91A6-312E882ECEC4} = {DF74FBBB-F35B-4BBF-8114-321FBB6502FC}
+	EndGlobalSection
+EndGlobal
