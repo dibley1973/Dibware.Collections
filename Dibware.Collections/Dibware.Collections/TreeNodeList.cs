@@ -1,11 +1,11 @@
-﻿using System;
+﻿using Dibware.Collections.Resources;
+using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace Dibware.Collections
 {
-    public class TreeNodeList<T> : IEnumerable, IEnumerable<T>
+    public class TreeNodeList<T> : IEnumerable, IEnumerable<TreeNode<T>>
     {
         private List<TreeNode<T>> _children;
         private readonly TreeNode<T> _owner;
@@ -23,59 +23,104 @@ namespace Dibware.Collections
             _owner = owner;
         }
 
-        private int AddInternal(TreeNode<T> node, int delta)
+        /// <summary>
+        /// Gets or sets the element at the specified index.
+        /// </summary>
+        /// <returns>
+        /// The element at the specified index.
+        /// </returns>
+        /// <param name="index">
+        /// The zero-based index of the element to get or set. 
+        /// </param>
+        /// <exception cref="T:System.ArgumentOutOfRangeException">
+        /// <paramref name="index" /> is not a valid index in the <see cref="T:System.Collections.IList" />. 
+        /// </exception>
+        /// <exception cref="T:System.NotSupportedException">
+        /// The property is set and the <see cref="T:System.Collections.IList" /> is read-only. 
+        /// </exception>
+        /// <filterpriority>2</filterpriority>
+        object this[int index]
         {
-            if (node == null)
+            get { return Children[index]; }
+            set
             {
-                throw new ArgumentNullException("node");
+                if (!(value is TreeNode<T>))
+                {
+                    throw new ArgumentException(ExceptionMessages.CannotSetIncorrectTreeNodeType, "value");
+                }
+                this[index] = (TreeNode<T>)value;
             }
-            //if (node.handle != IntPtr.Zero)
-            //{
-            //    object[] text = new object[] { node.Text };
-            //    throw new ArgumentException(SR.GetString("OnlyOneControl", text), "node");
-            //}
-            //TreeView treeView = this.owner.TreeView;
-            //if (treeView != null && treeView.Sorted)
-            //{
-            //    return this.owner.AddSorted(node);
-            //}
-            //node.parent = this.owner;
-            //int fixedIndex = this.owner.Nodes.FixedIndex;
-            //if (fixedIndex == -1)
-            //{
-            //    this.owner.EnsureCapacity(1);
-            //    node.index = this.owner.childCount;
-            //}
-            //else
-            //{
-            //    node.index = fixedIndex + delta;
-            //}
-            //this.owner.children[node.index] = node;
-            //TreeNode treeNode = this.owner;
-            //treeNode.childCount = treeNode.childCount + 1;
-            //node.Realize(false);
-            //if (treeView != null && node == treeView.selectedNode)
-            //{
-            //    treeView.SelectedNode = node;
-            //}
-            //if (treeView != null && treeView.TreeViewNodeSorter != null)
-            //{
-            //    treeView.Sort();
-            //}
-            //return node.index;
-
-            return -1; // TODO Correct to something meaningful!
         }
+
+        public int Add(TreeNode<T> node)
+        {
+            if (node == null) throw new ArgumentNullException("node");
+
+            Children.Add(node);
+            return ChildCount - 1;
+        }
+
+        //private int AddInternal(TreeNode<T> node, int delta)
+        //{
+        //    if (node == null)  throw new ArgumentNullException("node");
+        //    if (delta < 0) throw new ArgumentOutOfRangeException("delta");
+        //    if (delta > ChildCount -1) throw new ArgumentOutOfRangeException("delta");
+
+        //    if (delta == 0)
+        //    {
+        //        return AddInternal(node);
+        //    }
+
+        //    Children.Insert(delta, node);
+        //    return delta;
+
+        //    //if (node.handle != IntPtr.Zero)
+        //    //{
+        //    //    object[] text = new object[] { node.Text };
+        //    //    throw new ArgumentException(SR.GetString("OnlyOneControl", text), "node");
+        //    //}
+        //    //TreeView treeView = this.owner.TreeView;
+        //    //if (treeView != null && treeView.Sorted)
+        //    //{
+        //    //    return this.owner.AddSorted(node);
+        //    //}
+        //    //node.parent = this.owner;
+        //    //int fixedIndex = this.owner.Nodes.FixedIndex;
+        //    //if (fixedIndex == -1)
+        //    //{
+        //    //    this.owner.EnsureCapacity(1);
+        //    //    node.index = this.owner.childCount;
+        //    //}
+        //    //else
+        //    //{
+        //    //    node.index = fixedIndex + delta;
+        //    //}
+        //    //this.owner.children[node.index] = node;
+        //    //TreeNode treeNode = this.owner;
+        //    //treeNode.childCount = treeNode.childCount + 1;
+        //    //node.Realize(false);
+        //    //if (treeView != null && node == treeView.selectedNode)
+        //    //{
+        //    //    treeView.SelectedNode = node;
+        //    //}
+        //    //if (treeView != null && treeView.TreeViewNodeSorter != null)
+        //    //{
+        //    //    treeView.Sort();
+        //    //}
+        //    //return node.index;
+
+        //    return -1; // TODO Correct to something meaningful!
+        //}
 
         public void AddRange(TreeNodeList<T> nodes)
         {
-            if (nodes == null) throw new ArgumentNullException("nodes"); 
+            if (nodes == null) throw new ArgumentNullException("nodes");
             if (nodes.ChildCount == 0) return;
 
-            //foreach (node in nodes.ToList())
-            //{
-            //    Children.Add((TreeNode<T>)node);
-            //}
+            foreach (var node in nodes)
+            {
+                Children.Add((TreeNode<T>)node);
+            }
 
         }
 
@@ -86,25 +131,8 @@ namespace Dibware.Collections
 
             foreach (var node in nodes)
             {
-                Children.Add(node);
+                Add(node);
             }
-
-            //TreeView treeView = this.owner.TreeView;
-            //if (treeView != null && (int)nodes.Length > 200)
-            //{
-            //    treeView.BeginUpdate();
-            //}
-            //this.owner.Nodes.FixedIndex = this.owner.childCount;
-            //this.owner.EnsureCapacity((int)nodes.Length);
-            for (int i = (int)nodes.Length - 1; i >= 0; i--)
-            {
-                this.AddInternal(nodes[i], i);
-            }
-            //this.owner.Nodes.FixedIndex = -1;
-            //if (treeView != null && (int)nodes.Length > 200)
-            //{
-            //    treeView.EndUpdate();
-            //}
         }
 
         public int ChildCount
@@ -125,14 +153,17 @@ namespace Dibware.Collections
             get { return _owner; }
         }
 
-        IEnumerator<T> IEnumerable<T>.GetEnumerator()
+        IEnumerator IEnumerable.GetEnumerator()
         {
-            throw new NotImplementedException();
+            return GetEnumerator();
         }
 
-        public IEnumerator GetEnumerator()
+        public IEnumerator<TreeNode<T>> GetEnumerator()
         {
-            throw new NotImplementedException();
+            for (int i = 0; i < ChildCount; i++)
+            {
+                yield return Children[i];
+            }
         }
     }
 }

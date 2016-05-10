@@ -56,6 +56,19 @@ namespace Dibware.Collections
             Children.AddRange(children);
         }
 
+        public TreeNodeList<T> GetRecursiveNodes()
+        {
+            var result = new TreeNodeList<T>(null);
+
+            foreach (var treeNode in Children)
+            {
+                result.Add(treeNode);
+                result.AddRange(treeNode.GetRecursiveNodes());
+            }
+
+            return result;
+        }
+
         public void ReplaceChildren(TreeNodeList<T> children)
         {
             if (children == null) throw new ArgumentNullException("children");
