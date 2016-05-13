@@ -143,12 +143,12 @@ namespace Dibware.Collections
             }
         }
 
-        protected internal List<TreeNode<T>> Children
+        public List<TreeNode<T>> Children
         {
             get { return _children; }
         }
 
-        protected internal TreeNode<T> Owner
+        public TreeNode<T> Owner
         {
             get { return _owner; }
         }

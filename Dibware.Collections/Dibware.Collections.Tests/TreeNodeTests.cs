@@ -159,6 +159,8 @@ namespace Dibware.Collections.Tests
             var node = new TreeNode<byte>();
             TreeNodeList<Byte> originalChildren = new TreeNodeList<Byte>(node);
             TreeNodeList<Byte> children = new TreeNodeList<Byte>(node);
+            node.AppendChildren(originalChildren);
+
 
             // ACT
             node.AppendChildren(children);
@@ -167,24 +169,33 @@ namespace Dibware.Collections.Tests
             Assert.IsNotNull(node.Children);
         }
 
+        //[TestMethod]
+        //public void Nodes_AfterInstantiationWithChildNodes_ReturnsSameInstanceOfChildNodes()
+        //{
+        //    // ARRANGE
+        //    var node = new TreeNode<byte>();
+        //    TreeNodeList<Byte> children = new TreeNodeList<Byte>(node);
 
+        //    // ACT
+        //    node.AppendChildren(children);
+
+        //    // ASSERT
+        //    Assert.AreSame(children, node.Children);
+        //}
 
         [TestMethod]
-        public void Nodes_AfterInstantiationWithChildNodes_ReturnsSameInstanceOfChildNodes()
+        public void Nodes_AfterReplaceChildrenWithChildNodes_ReturnsSameInstanceOfChildNodes()
         {
             // ARRANGE
             var node = new TreeNode<byte>();
             TreeNodeList<Byte> children = new TreeNodeList<Byte>(node);
 
             // ACT
-            node.AppendChildren(children);
+            node.ReplaceChildren(children);
 
             // ASSERT
             Assert.AreSame(children, node.Children);
         }
-
-
-
 
         [TestMethod]
         [ExpectedException(typeof(ArgumentNullException))]
