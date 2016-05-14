@@ -14,7 +14,7 @@ namespace Dibware.Collections.Tests
             var nodeList = new TreeNodeList<Byte>(owner);
 
             // ACT
-            var actual = nodeList.ChildCount;
+            var actual = nodeList.Count;
 
             // ASSERT
             Assert.AreEqual(0, actual);
@@ -28,7 +28,7 @@ namespace Dibware.Collections.Tests
             var nodeList = new TreeNodeList<Byte>(owner);
 
             // ACT
-            var actual = nodeList.Children;
+            var actual = nodeList.Nodes;
 
             // ASSERT
             Assert.IsNotNull(actual);

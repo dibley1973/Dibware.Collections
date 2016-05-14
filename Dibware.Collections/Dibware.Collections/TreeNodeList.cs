@@ -103,15 +103,7 @@ namespace Dibware.Collections
             get { return false; }
         }
 
-         protected internal List<TreeNode<T>> Nodes
-        {
-            get { return _nodes; }
-        }
-
-
-        public bool IsSynchronized
-
-        protected internal List<TreeNode<T>> Nodes
+        public List<TreeNode<T>> Nodes
         {
             get { return _nodes; }
         }
