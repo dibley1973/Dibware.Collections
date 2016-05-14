@@ -27,6 +27,22 @@ namespace Dibware.Collections.Tests
             new TreeNode<byte>(text);
         }
 
+
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentNullException))]
+        public void Constructor_WhenInstantiatedWithNullTag_ThrowsException()
+        {
+            // ARRANGE
+            const string text = "Hello";
+            string tag = null;
+
+            // ACT
+            // ReSharper disable once ObjectCreationAsStatement
+            // ReSharper disable once ExpressionIsAlwaysNull
+            new TreeNode<string>(text, tag);
+        }
+
+
         [TestMethod]
         public void Nodes_AfterInstantiation_ReturnsEmptyList()
         {
@@ -38,8 +54,22 @@ namespace Dibware.Collections.Tests
 
             // ASSERT
             Assert.IsNotNull(actual);
-            Assert.AreEqual(0, actual.ChildCount);
+            Assert.AreEqual(0, actual.Count);
         }
+
+        [TestMethod]
+        public void GetRecursiveNodes_WhenCalledWithNestedNodeLists_ReturnsNodesAsFlatttenedList()
+        {
+            // ARRANGE
+
+            var grandParent = new TreeNode<Byte>("Garand Parent", (byte)1);
+
+            // ACT
+            throw new NotImplementedException();
+
+            // ASSERT
+        }
+
 
         [TestMethod]
         public void Tag_AfterInstantiation_ReturnsNull()
@@ -149,7 +179,7 @@ namespace Dibware.Collections.Tests
             node.AppendChildren(children);
 
             // ASSERT
-            Assert.AreSame(children, node.Children);
+            CollectionAssert.AreEqual(children, node.Children);
         }
 
         [TestMethod]
@@ -174,17 +204,21 @@ namespace Dibware.Collections.Tests
         {
             // ARRANGE
             var node = new TreeNode<byte>();
-            TreeNodeList<Byte> children = new TreeNodeList<Byte>(node);
+            var children = new TreeNodeList<Byte>(node)
+            {
+                new TreeNode<byte>("A", 1),
+                new TreeNode<byte>("B", 2),
+                new TreeNode<byte>("C", 3)
+            };
 
             // ACT
             node.AppendChildren(children);
 
             // ASSERT
-            Assert.AreSame(children, node.Children);
+            Assert.AreSame(children[0], node.Children[0]);
+            Assert.AreSame(children[1], node.Children[1]);
+            Assert.AreSame(children[2], node.Children[2]);
         }
-
-
-
 
         [TestMethod]
         [ExpectedException(typeof(ArgumentNullException))]
@@ -195,6 +229,52 @@ namespace Dibware.Collections.Tests
 
             // ACT
             node.ReplaceChildren(null);
+        }
+
+        [TestMethod]
+        public void Children_AfterCallingReplaceChildrenWithValidChildNodes_ReturnsSameInstance()
+        {
+            // ARRANGE
+            var node = new TreeNode<Byte>();
+
+            var nodeList1 = new TreeNodeList<Byte>(node)
+            {
+                new TreeNode<byte>("A", 1),
+                new TreeNode<byte>("B", 2),
+                new TreeNode<byte>("C", 3)
+            };
+
+            var nodeList2 = new TreeNodeList<Byte>(node)
+            {
+                new TreeNode<byte>("D", 4),
+                new TreeNode<byte>("E", 5),
+                new TreeNode<byte>("F", 6)
+            };
+
+            node.ReplaceChildren(nodeList1);
+
+            // ACT
+            node.ReplaceChildren(nodeList2);
+
+            // ASSERT
+            Assert.AreNotSame(nodeList1, node.Children);
+            Assert.AreSame(nodeList2, node.Children);
+            CollectionAssert.AreNotEqual(nodeList1, node.Children);
+            CollectionAssert.AreEqual(nodeList2, node.Children);
+        }
+
+        [TestMethod]
+        public void ToString_WhenCalled_ReturnsCorrectFormat()
+        {
+            // ARRANGE
+            const byte tag = (byte)5;
+            var node = new TreeNode<Byte>("Test", tag);
+
+            // ACT
+            var actual = node.ToString();
+
+            // ASSERT
+            Assert.AreEqual("Dibware.Collections.TreeNode`1[System.Byte] [Test:5]", actual);
         }
     }
 }

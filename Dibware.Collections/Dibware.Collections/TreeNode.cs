@@ -7,15 +7,6 @@ namespace Dibware.Collections
         private TreeNodeList<T> _children;
         private string _text;
 
-        public TreeNodeList<T> Children
-        {
-            get
-            {
-                return _children ?? (_children = new TreeNodeList<T>(this));
-            }
-            private set { _children = value; }
-        }
-
         public TreeNode()
         {
         }
@@ -26,6 +17,23 @@ namespace Dibware.Collections
             if (string.IsNullOrWhiteSpace(text)) throw new ArgumentNullException("text");
 
             _text = text;
+        }
+
+        public TreeNode(string text, T tag)
+            : this(text)
+        {
+            if (tag == null) throw new ArgumentNullException("tag");
+
+            Tag = tag;
+        }
+
+        public TreeNodeList<T> Children
+        {
+            get
+            {
+                return _children ?? (_children = new TreeNodeList<T>(this));
+            }
+            private set { _children = value; }
         }
 
         /// <summary>
@@ -74,6 +82,11 @@ namespace Dibware.Collections
             if (children == null) throw new ArgumentNullException("children");
 
             Children = children;
+        }
+
+        public override string ToString()
+        {
+            return string.Format("{0} [{1}:{2}]", GetType(), Text, Tag);
         }
     }
 }
